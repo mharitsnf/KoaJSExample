@@ -10,9 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "knex": "^0.20.1",
     "koa": "^2.11.0",
+    "koa-jwt": "^3.6.0",
     "koa-logger": "^3.2.1",
     "koa-router": "^7.4.0",
+    "koa-unless": "^1.0.7",
+    "mysql": "^2.17.1",
+    "mysql2": "^2.0.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^1.19.4"
   },
