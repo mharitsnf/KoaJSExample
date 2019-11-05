@@ -1,18 +1,12 @@
+const { send } = require('./responseParser')
+
 // The actual error handler
 const errorMiddleware = async (ctx, next) => {
     try {
         await next();
     } catch (err) {
         ctx.status = err.status || 500
-        let body = {
-            status: false
-        }
-        if (ctx.status == 401) {
-            body.message = "You are unauthorized."
-        } else {
-            body.message = err.message
-        }
-        ctx.body = body
+        ctx.body = send(err.status, 'Failed', err.message)
         ctx.app.emit('error', err, ctx) // Emit error...
     }
 }
