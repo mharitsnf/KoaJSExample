@@ -1,3 +1,4 @@
+// The actual error handler
 const errorMiddleware = async (ctx, next) => {
     try {
         await next();
@@ -16,6 +17,7 @@ const errorMiddleware = async (ctx, next) => {
     }
 }
 
+// Function to process upon catching 'error'
 const errorLogger = async (err, ctx) => {  // ... catch here
     console.log(err)
     console.log(ctx)

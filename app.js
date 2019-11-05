@@ -6,11 +6,12 @@ const jwt = require('./configs/jwt')
 
 const { errorMiddleware, errorLogger } = require('./handlers/error')
 
+// This function is used to show logs on console
 app.use(logger())
 
 // Error handling
 app.use(errorMiddleware);
-// app.on('error', errorLogger);
+app.on('error', errorLogger);
 
 // Export routers
 const router = new Router()
@@ -30,13 +31,16 @@ require('./routes/pos')({ posRouter });
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-app.use(jwt) // Below here are authenticated routes
+// Authentication using JWT
+app.use(jwt) 
 
+// Below here are authenticated routes
 app.use(dogRouter.routes())
 app.use(dogRouter.allowedMethods())
 
 app.use(posRouter.routes())
 app.use(posRouter.allowedMethods())
 
+// Open port 3100 and congrats!
 const server = app.listen(3100)
 module.exports = server

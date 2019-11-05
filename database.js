@@ -1,10 +1,11 @@
+// Query builder using knex. Setup database connection here:
 const knex = require('knex')({
     client: 'mysql',
     connection: {
-        host: '',
-        user: '',
-        password: '',
-        database: ''
+        host: 'jne.terralogiq.net',
+        user: 'root',
+        password: 'terra321!',
+        database: 'jne-temp'
     }
 })
 
