@@ -1,9 +1,17 @@
-const send = (status, message, data) => {
+const send = (code, status, data) => {
     return {
+        code: code,
         status: status,
-        message: message,
         data: data
     }
 }
 
-module.exports = { send }
+const fail = (code, status, error) => {
+    return {
+        code: code,
+        status: status,
+        error: error
+    }
+}
+
+module.exports = { send, fail }

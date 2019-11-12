@@ -6,7 +6,7 @@ module.exports = ({ dogRouter }) => {
     dogRouter.get('/', async (ctx, next) => {
         try {
             let response = await request.get('https://dog.ceo/api/breeds/list/all')
-            ctx.body = send(200, 'OK', response.body.message)
+            ctx.body = send(200, true, response.body.message)
         } catch (error) {
             console.log(error)
         }
