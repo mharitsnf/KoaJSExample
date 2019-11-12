@@ -10,18 +10,18 @@ module.exports = ({ router }) => {
     // /query?id=12&name=hellow
     router.get('/query', (ctx, next) => {
         let query = ctx.query
-        ctx.body = send(200, 'OK', query)
+        ctx.body = send(200, true, query)
     })
 
     // Another example on query
     // return { page: ..., peepee: ... }
     router.get('/test/:page/untest/:peepee', (ctx, next) => {
         let params = ctx.params
-        ctx.body = send(200, 'OK', params)
+        ctx.body = send(200, true, params)
     })
 
     router.post('/send', (ctx, next) => {
-        ctx.body = send(200, 'OK', ctx.request.body)
+        ctx.body = send(200, true, ctx.request.body)
     })
 
     // Experimenting error

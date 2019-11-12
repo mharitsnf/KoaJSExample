@@ -1,6 +1,7 @@
-//routes.test.js
+// npm install -D jest supertest
+
 const request = require('supertest');
-const server = require('../startkoa');
+const server = require('../app');
 
 beforeAll(async () => {
     // do something before anything else runs
@@ -21,10 +22,10 @@ describe('basic route tests', () => {
     });
 });
 
-describe('dog tests', () => {
-    test('get all dogs  GET /dogs', async () => {
-        const response = await request(server).get('/dogs');
-        expect(response.status).toEqual(200);
-        expect(response.text).toContain('affenpinscher');
-    });
-});
+// describe('dog tests', () => {
+//     test('get all dogs  GET /dogs', async () => {
+//         const response = await request(server).get('/dogs');
+//         expect(response.status).toEqual(200);
+//         expect(response.text).toContain('affenpinscher');
+//     });
+// });
