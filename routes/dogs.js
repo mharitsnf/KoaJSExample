@@ -1,4 +1,4 @@
-const request = require('superagent');
+const fetch = require('node-fetch');
 const { send } = require('../extras/responseParser')
 
 module.exports = ({ dogRouter }) => {
@@ -6,8 +6,9 @@ module.exports = ({ dogRouter }) => {
     // Getting dogs route
     dogRouter.get('/', async (ctx, next) => {
         try {
-            let response = await request.get('https://dog.ceo/api/breeds/list/all')
-            ctx.body = send(200, response.body.message)
+            let response = await fetch('https://dog.ceo/api/breeds/list/all')
+            let responseJson = await response.json()
+            ctx.body = send(200, responseJson.message)
         } catch (error) {
             ctx.throw(500, error)
         }
