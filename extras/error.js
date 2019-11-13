@@ -1,4 +1,4 @@
-const { send } = require('./responseParser')
+const { send, fail } = require('./responseParser')
 
 // The actual error handler
 const errorMiddleware = async (ctx, next) => {
@@ -6,7 +6,7 @@ const errorMiddleware = async (ctx, next) => {
         await next();
     } catch (err) {
         ctx.status = err.status || 500
-        ctx.body = send(err.status, 'Failed', err.message)
+        ctx.body = fail(err.status, err.message)
         ctx.app.emit('error', err, ctx) // Emit error...
     }
 }

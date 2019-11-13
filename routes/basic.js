@@ -1,27 +1,43 @@
-const { send } = require('../extras/responseParser')
+const { send, fail } = require('../extras/responseParser')
 
 module.exports = ({ router }) => {
     // Getting the home route
-    router.get('/', (ctx, next) => {
-        ctx.body = 'Hello World!'
+    router.get('/', async (ctx, next) => {
+        try {
+            ctx.body = 'Hello World!'            
+        } catch (error) {
+            ctx.throw(500, error)
+        }
     })
 
     // Example getting query
     // /query?id=12&name=hellow
-    router.get('/query', (ctx, next) => {
-        let query = ctx.query
-        ctx.body = send(200, true, query)
+    router.get('/query', async (ctx, next) => {
+        try {
+            let query = ctx.query
+            ctx.body = send(200, query)                
+        } catch (error) {
+            ctx.throw(500, error)            
+        }
     })
 
     // Another example on query
     // return { page: ..., peepee: ... }
-    router.get('/test/:page/untest/:peepee', (ctx, next) => {
-        let params = ctx.params
-        ctx.body = send(200, true, params)
+    router.get('/test/:page/untest/:peepee', async (ctx, next) => {
+        try {
+            let params = ctx.params
+            ctx.body = send(200, params)                
+        } catch (error) {
+            ctx.throw(500, error)
+        }
     })
 
-    router.post('/send', (ctx, next) => {
-        ctx.body = send(200, true, ctx.request.body)
+    router.post('/send', async (ctx, next) => {
+        try {
+            ctx.body = send(200, ctx.request.body)            
+        } catch (error) {
+            ctx.throw(500, error)
+        }
     })
 
     // Experimenting error

@@ -1,15 +1,15 @@
-const send = (code, status, data) => {
+const send = (code, data) => {
     return {
         code: code,
-        status: status,
+        status: true,
         data: data
     }
 }
 
-const fail = (code, status, error) => {
+const fail = (code, error) => {
     return {
         code: code,
-        status: status,
+        status: false,
         error: error
     }
 }

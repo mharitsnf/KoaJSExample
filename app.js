@@ -13,7 +13,7 @@ app.use(bodyParser())
 
 // Error handling
 app.use(errorMiddleware);
-// app.on('error', errorLogger);
+app.on('error', errorLogger);
 
 // Export routers
 const router = new Router()
