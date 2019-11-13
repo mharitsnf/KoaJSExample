@@ -59,5 +59,5 @@ app.use(apiRouter.allowedMethods())
 
 
 // Open port 3100 and congrats!
-const server = app.listen(8080)
+const server = app.listen(process.env.PORT || 3100)
 module.exports = server
