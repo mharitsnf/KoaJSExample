@@ -58,6 +58,6 @@ app.use(apiRouter.routes())
 app.use(apiRouter.allowedMethods())
 
 
-// Open port 3100 and congrats!
-const server = app.listen(process.env.PORT || 3100)
+// Open port 8080 and congrats!
+const server = app.listen(process.env.PORT || 8080)
 module.exports = server
