@@ -16,24 +16,29 @@ app.use(errorMiddleware);
 app.on('error', errorLogger);
 
 // Export routers
+// SAMPLE BASIC ROUTERS
 const router = new Router()
 require('./routes/basic')({ router });
 
+// SAMPLE DOGS ROUTER
 const dogRouter = new Router({
     prefix: '/dogs'
 })
 require('./routes/dogs')({ dogRouter });
 
+// SAMPLE POS ROUTER
 const posRouter = new Router({
     prefix: '/pos'
 })
 require('./routes/pos')({ posRouter });
 
+// AUTH ROUTER
 const authRouter = new Router({
     prefix: '/auth'
 })
 require('./routes/auth')({ authRouter })
 
+// SECURED CONTROLLER
 const apiRouter = new Router()
 apiRouter.use('/api', posRouter.routes(), posRouter.allowedMethods())
 apiRouter.use('/api', dogRouter.routes(), dogRouter.allowedMethods())

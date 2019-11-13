@@ -2,6 +2,7 @@ const request = require('superagent');
 const { send } = require('../extras/responseParser')
 
 module.exports = ({ dogRouter }) => {
+    
     // Getting dogs route
     dogRouter.get('/', async (ctx, next) => {
         try {
