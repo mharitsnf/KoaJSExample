@@ -1,10 +1,23 @@
 version: '3'
 
 services:
-  server:
-    build: .
+  server-dev:
+    build: ./docker/dev
     ports: 
       - '3100:8080'
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - .:/usr/src/app
+    links:
+      - mysql
+      - redis
+
+  server-test:
+    build: ./docker/test
+    ports: 
+      - '3110:8081'
     depends_on:
       - mysql
       - redis
