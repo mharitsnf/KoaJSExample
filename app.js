@@ -3,8 +3,8 @@ const logger = require('koa-logger')
 const Router = require('koa-router')
 const app = new Koa()
 const jwt = require('./configs/jwt')
+const { redis } = require('./configs/redis')
 const bodyParser = require('koa-bodyparser')
-
 const { errorMiddleware, errorLogger } = require('./extras/error')
 
 // This function is used to show logs on console
@@ -13,7 +13,7 @@ app.use(bodyParser())
 
 // Error handling
 app.use(errorMiddleware);
-app.on('error', errorLogger);
+// app.on('error', errorLogger);
 
 // Export routers
 // SAMPLE BASIC ROUTERS
@@ -50,8 +50,9 @@ app.use(router.allowedMethods())
 app.use(authRouter.routes())
 app.use(authRouter.allowedMethods())
 
-// Authentication using JWT
+// Authentication using JWT and Redis
 app.use(jwt) 
+app.use(redis) 
 
 // Below here are authenticated routes
 app.use(apiRouter.routes())

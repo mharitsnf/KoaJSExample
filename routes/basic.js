@@ -4,7 +4,8 @@ module.exports = ({ router }) => {
     // Getting the home route
     router.get('/', async (ctx, next) => {
         try {
-            ctx.body = 'Hello World!'            
+            // console.log('request: ' + JSON.stringify(ctx.headers))
+            ctx.body = 'Hello World!'
         } catch (error) {
             ctx.throw(500, error)
         }
