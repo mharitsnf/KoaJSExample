@@ -28,4 +28,28 @@ const storeRedis = async (key, value) => {
     }
 }
 
-module.exports = { redis, storeRedis }
+const deleteRedis = async (key) => {
+    try {
+        redisClient.del(key)
+    } catch (error) {
+        throw error
+    }
+}
+
+const existsRedis = async (key) => {
+    try {
+        return redisClient.exists(key)
+    } catch (error) {
+        throw error
+    }
+}
+
+const getRedis = async (key) => {
+    try {
+        return await redisClient.get(key)
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = { redis, storeRedis, deleteRedis, existsRedis, getRedis }

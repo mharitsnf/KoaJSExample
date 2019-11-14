@@ -1,5 +1,7 @@
 const request = require('supertest');
 const server = require('../app');
+const redis = require('async-redis').createClient({ host: 'redis' })
+const token;
 
 beforeAll(async () => {
     // do something before anything else runs
@@ -20,14 +22,44 @@ describe('test auth path responsiveness', () => {
     });
 });
 
-describe('test login using hardcoded user', () => {
-    test('POST /auth/login successful', async () => {
+describe('Login: API /auth/login', () => {
+    test('Successful', async () => {
         let response = await request(server).post('/auth/login').send({ username: "user", password: "password" })
         expect(response.body.code).toEqual(200)
+        token = response.body.data.token
     });
 
-    test('POST /auth/login wrong username/password', async () => {
+    test('Wrong username/password', async () => {
         let response = await request(server).post('/auth/login').send({ username: "user", password: "wrong" })
         expect(response.body.code).toEqual(400)
     });
 });
+
+describe('Logout: API /auth/logout', () => {
+    test('Invalid token', async () => {
+        let response = await request(server).post('/auth/logout').send({ username: "user",  token: 'aaaaaaa' })
+        let isExistsOnRedis = await redis.exists('user')
+        expect(response.body.code).toEqual(401)
+        expect(isExistsOnRedis).toEqual(1)
+    })
+
+    test('Successful', async () => {
+        let response = await request(server).post('/auth/logout').send({ username: "user",  token: token })
+        let isExistsOnRedis = await redis.exists('user')
+        expect(response.body.code).toEqual(200)
+        expect(isExistsOnRedis).not.toEqual(1)
+    })
+
+    test('Used token', async () => {
+        let response = await request(server).post('/auth/logout').send({ username: "user",  token: token })
+        let isExistsOnRedis = await redis.exists('user')
+        expect(response.body.code).toEqual(401)
+        expect(isExistsOnRedis).not.toBe(0)
+    })
+
+    test('Other user`s token', async () => {
+        let response = await request(server).post('/auth/logout').send({ username: "penya",  token: token })
+        expect(response.body.code).toEqual(401)
+    })
+
+})

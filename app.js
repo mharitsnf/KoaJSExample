@@ -51,8 +51,8 @@ app.use(authRouter.routes())
 app.use(authRouter.allowedMethods())
 
 // Authentication using JWT and Redis
-app.use(jwt) 
-app.use(redis) 
+app.use(jwt)
+app.use(redis)
 
 // Below here are authenticated routes
 app.use(apiRouter.routes())
