@@ -3,6 +3,7 @@ const { send } = require('../extras/responseParser')
 
 module.exports = ({ posRouter }) => {
     
+    // Using database example
     posRouter.get('/', async (ctx, next) => {
         try {
             let res = await db.select().from('pos');
