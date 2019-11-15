@@ -1,4 +1,4 @@
-const db = require('../database')
+const db = require('../configs/database')
 const { send } = require('../extras/responseParser')
 
 module.exports = ({ posRouter }) => {

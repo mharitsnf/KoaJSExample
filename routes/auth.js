@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
 const { storeRedis, deleteRedis, existsRedis, getRedis } = require('../configs/redis')
 const { send, fail } = require('../extras/responseParser')
+const dotenv = require('dotenv')
+dotenv.config()
 
 module.exports = ({ authRouter }) => {
     // Login
@@ -9,7 +11,7 @@ module.exports = ({ authRouter }) => {
             let reqBody = ctx.request.body
 
             if (reqBody.username == 'user' && reqBody.password == 'password') {
-                let token = jwt.sign({ username: reqBody.username }, 'hayo tebak secretnya apa')
+                let token = jwt.sign({ username: reqBody.username }, process.env.JWT_SECRET || 'defaulttokensecret')
                 storeRedis(reqBody.username, token)
 
                 ctx.body = send(200, { token: token })
@@ -27,7 +29,7 @@ module.exports = ({ authRouter }) => {
     authRouter.post('/logout', async (ctx, next) => {
         try {
             let reqBody = ctx.request.body
-            let verifyResult = jwt.verify(reqBody.token, 'hayo tebak secretnya apa')
+            let verifyResult = jwt.verify(reqBody.token, process.env.JWT_SECRET || 'defaulttokensecret')
 
             // Check if token payload same with the data sent
             if (verifyResult.username != reqBody.username) {
