@@ -1,6 +1,7 @@
 const {
     performance
   } = require('perf_hooks');
+
 /**
  * Function for handling queries and mutation for GraphQL
  * Example request through body
@@ -8,8 +9,7 @@ const {
  * @param {*} ctx 
  * @param {*} next 
  */
-
-const graphQLHandlerExample = async (ctx, next) => {
+const graphQLHandler = async (ctx, next) => {
     try {
         var t1 = performance.now()
         
@@ -50,37 +50,4 @@ const graphQLHandlerExample = async (ctx, next) => {
     }
 }
 
-const graphQLHandler = async (ctx, next) => {
-    try {
-        let query = '{ '
-
-        query += ctx.request.body.query + " "
-
-        if (ctx.request.body.args !== undefined) {
-            let args = ctx.request.body.args
-            let arrArgs = []
-            Object.entries(args).forEach(([key, val]) => {
-                arrArgs.push(`${key}: ${val}`)
-            })
-            query += "(" + arrArgs.join(", ") + ") "
-
-        }
-
-        if (ctx.request.body.fields !== undefined) {
-            let fields = ctx.request.body.fields
-            query += '{ '
-            fields.forEach((val, index) => {
-                query += `${val} `
-            })
-            query += '}'
-        }
-
-        query += '}'
-        ctx.state.query = query
-        await next()
-    } catch (error) {
-        ctx.throw(500, error)
-    }
-}
-
-module.exports = { graphQLHandlerExample, graphQLHandler }
+module.exports = { graphQLHandler }

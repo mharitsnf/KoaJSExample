@@ -6,7 +6,7 @@ const jwt = require('./configs/jwt')
 const { redis } = require('./configs/redis')
 const bodyParser = require('koa-bodyparser')
 const { errorMiddleware, errorLogger } = require('./extras/error')
-const { graphQLHandlerExample, graphQLHandler } = require('./extras/handlers')
+const { graphQLHandler } = require('./extras/handlers')
 
 // This function is used to show logs on console
 app.use(logger())
@@ -61,7 +61,7 @@ app.use(authRouter.allowedMethods())
 // Authentication using JWT and Redis
 app.use(jwt)
 app.use(redis)
-app.use(graphQLHandlerExample)
+app.use(graphQLHandler)
 
 // Below here are authenticated routes
 app.use(apiRouter.routes())
