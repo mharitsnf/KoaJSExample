@@ -6,6 +6,13 @@ const send = (code, data) => {
     }
 }
 
+const sendGQL = (code, data) => {
+    return {...{
+        code: code,
+        status: true
+    }, ...data}
+}
+
 const fail = (code, error) => {
     return {
         code: code,
@@ -14,4 +21,4 @@ const fail = (code, error) => {
     }
 }
 
-module.exports = { send, fail }
+module.exports = { send, sendGQL, fail }

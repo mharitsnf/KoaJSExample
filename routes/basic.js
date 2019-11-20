@@ -1,10 +1,12 @@
 const { send, fail } = require('../extras/responseParser')
+const graphqlHTTP = require('koa-graphql')
+const { schema } = require('../configs/db/schemas/users')
 
 module.exports = ({ router }) => {
     // Getting the home route
     router.get('/', async (ctx, next) => {
         try {
-            // console.log('request: ' + JSON.stringify(ctx.headers))
+            console.log(JSON.stringify(ctx.headers))
             ctx.body = 'Hello World!'
         } catch (error) {
             ctx.throw(500, error)
@@ -40,6 +42,11 @@ module.exports = ({ router }) => {
             ctx.throw(500, error)
         }
     })
+
+    router.all('/graphql', graphqlHTTP({
+        schema: schema,
+        graphiql: true
+    }))
 
     // Experimenting error
     router.get('/error', (ctx, next) => {

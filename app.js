@@ -6,6 +6,7 @@ const jwt = require('./configs/jwt')
 const { redis } = require('./configs/redis')
 const bodyParser = require('koa-bodyparser')
 const { errorMiddleware, errorLogger } = require('./extras/error')
+const { graphQLHandlerExample, graphQLHandler } = require('./extras/handlers')
 
 // This function is used to show logs on console
 app.use(logger())
@@ -32,6 +33,12 @@ const posRouter = new Router({
 })
 require('./routes/pos')({ posRouter });
 
+// SAMPLE POS ROUTER
+const usersRouter = new Router({
+    prefix: '/users'
+})
+require('./routes/users')({ usersRouter });
+
 // AUTH ROUTER
 const authRouter = new Router({
     prefix: '/auth'
@@ -42,6 +49,7 @@ require('./routes/auth')({ authRouter })
 const apiRouter = new Router()
 apiRouter.use('/api', posRouter.routes(), posRouter.allowedMethods())
 apiRouter.use('/api', dogRouter.routes(), dogRouter.allowedMethods())
+apiRouter.use('/api', usersRouter.routes(), usersRouter.allowedMethods())
 
 // Start and configure server
 app.use(router.routes())
@@ -53,6 +61,7 @@ app.use(authRouter.allowedMethods())
 // Authentication using JWT and Redis
 app.use(jwt)
 app.use(redis)
+app.use(graphQLHandlerExample)
 
 // Below here are authenticated routes
 app.use(apiRouter.routes())

@@ -8,6 +8,7 @@ module.exports = ({ authRouter }) => {
     // Login
     authRouter.post('/login', async (ctx, next) => {
         try {
+            console.log(ctx.request.header['user-agent'])
             let reqBody = ctx.request.body
 
             if (reqBody.username == 'user' && reqBody.password == 'password') {
@@ -33,15 +34,18 @@ module.exports = ({ authRouter }) => {
 
             // Check if token payload same with the data sent
             if (verifyResult.username != reqBody.username) {
+                console.log('Mismatch username')
                 ctx.throw(401, 'Authentication error')
             }
 
             if (await existsRedis(reqBody.username) != 1) {
+                console.log('Not exists in Redis')
                 ctx.throw(401, 'Authentication error')
             }
 
             let tokenInRedis = await getRedis(reqBody.username)
             if (tokenInRedis != reqBody.token) {
+                console.log('Mismatch token')
                 ctx.throw(401, 'Authentication error')
             }
 
