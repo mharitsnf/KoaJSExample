@@ -1,30 +1,13 @@
 const db = require('../database')
 const {
     GraphQLID,
-    GraphQLString,
     GraphQLList,
     GraphQLObjectType,
     GraphQLSchema,
-    GraphQLNonNull
+    GraphQLNonNull,
 } = require('graphql')
-
-const UserType = new GraphQLObjectType({
-    name: "User",
-    fields: {
-        id: { type: GraphQLID },
-        idPrivilegeLevel: { type: GraphQLID },
-        idSatuanKerja: { type: GraphQLID },
-        username: { type: GraphQLString },
-        password: { type: GraphQLString },
-        fullname: { type: GraphQLString },
-        email: { type: GraphQLString },
-        lastLogin: { type: GraphQLString },
-        createdBy: { type: GraphQLID },
-        createdAt: { type: GraphQLString },
-        updatedBy: { type: GraphQLID },
-        updatedAt: { type: GraphQLString },
-    }
-})
+const UserType = require('../types')
+const OrderInput = require('../inputs')
 
 const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -32,8 +15,20 @@ const schema = new GraphQLSchema({
         fields: {
             users: {
                 type: GraphQLList(UserType),
+                args: {
+                    order: { type: GraphQLList(OrderInput) }
+                },
                 resolve: async (root, args, context, info) => {
-                    return await db.select().from('users')
+                    let query = db.select().from('users')
+
+                    // Loop for ordering
+                    if (args.order !== undefined) {
+                        args.order.forEach(element => {
+                            query.orderBy(element.column, element.dir)
+                        });
+                    }
+
+                    return await query
                 }
             },
             user: {
